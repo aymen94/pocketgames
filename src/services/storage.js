@@ -6,7 +6,7 @@ const KEY = 'pocketgames:v1';
 const listeners = new Set();
 
 function blank() {
-	return { favorites: [], recent: [], plays: {}, best: {}, settings: { sound: true, games: {}, graphics: { quality: 'medium', backend: 'auto' } }, progress: {} };
+	return { favorites: [], recent: [], plays: {}, best: {}, settings: { sound: true, games: {}, graphics: { quality: 'auto', backend: 'auto' } }, progress: {} };
 }
 
 function load() {

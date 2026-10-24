@@ -150,7 +150,33 @@ export function customTokens(accent = state.accent, base = state.base) {
 
 // ---------------------------------------------------------------- applying
 
-function apply() {
+let transition = null;
+
+/**
+ * Applies the theme with a short cross-fade instead of an abrupt repaint: a View Transition
+ * where the browser has one (a single GPU cross-fade of the whole page, so nothing stutters
+ * while every token changes at once), otherwise a brief colour transition on the page.
+ * Reduced motion and the first paint switch instantly.
+ */
+function apply(animate = true) {
+	const reduced = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+	if (!animate || reduced) return applyNow();
+	const root = document.documentElement;
+	if (typeof document.startViewTransition === 'function') {
+		// a change while the previous fade still runs finishes that one first
+		transition?.skipTransition?.();
+		root.classList.add('theme-switching');
+		transition = document.startViewTransition(() => applyNow());
+		transition.finished.finally(() => { root.classList.remove('theme-switching'); transition = null; });
+		return;
+	}
+	root.classList.add('theme-fading');
+	applyNow();
+	clearTimeout(apply.timer);
+	apply.timer = setTimeout(() => root.classList.remove('theme-fading'), 450);
+}
+
+function applyNow() {
 	const root = document.documentElement;
 	root.dataset.theme = state.id;
 	const custom = state.id === 'custom' ? customTokens() : null;
@@ -211,5 +237,5 @@ export const theme = {
 
 /** Applies the saved theme (index.html already did, before paint) and normalises storage. */
 export function startTheme() {
-	apply();
+	apply(false);
 }

@@ -1,6 +1,7 @@
 // The theme picker: a compact palette button that opens a popover of named themes and
 // the Custom accent controls. The same option list is reused inside the settings
-// dialog. Changes apply instantly through services/theme.js; nothing reloads.
+// dialog. Theme choices apply through services/theme.js (with a short cross-fade); the
+// custom accent is previewed first and only applied with its Apply button.
 
 import { h } from './dom.js';
 import { THEMES, CUSTOM_BASES, theme, customTokens } from '../services/theme.js';
@@ -30,19 +31,25 @@ export function themeOptions({ legend = 'Theme', onChange } = {}) {
 	);
 
 	const colorId = `${name}-accent`;
-	let accentFrame = 0;
-	const color = h('input.color-input', {
-		id: colorId, type: 'color', value: theme.state.accent,
-		oninput: () => {
-			// Native colour controls can emit input events faster than a frame. Apply
-			// only the latest value once per frame so theme listeners stay responsive.
-			if (accentFrame) cancelAnimationFrame(accentFrame);
-			accentFrame = requestAnimationFrame(() => {
-				accentFrame = 0;
-				theme.setCustom({ accent: color.value });
-			});
-		},
-	});
+	// the colour picker only previews: re-theming the whole site on every drag step is
+	// what made it stutter, so the accent changes when the player presses Apply
+	const preview = h('span.accent-preview', { 'aria-hidden': 'true' });
+	const pendingLabel = h('span.accent-value');
+	const color = h('input.color-input', { id: colorId, type: 'color', value: theme.state.accent, oninput: () => showPending() });
+	const applyBtn = h('button.btn.small.primary', { type: 'button', onclick: () => {
+		theme.setCustom({ accent: color.value });
+		audio.play('select');
+		showPending();
+	} }, 'Apply');
+	const resetBtn = h('button.btn.small.ghost', { type: 'button', onclick: () => { color.value = theme.state.accent; showPending(); } }, 'Reset');
+	const showPending = () => {
+		const current = theme.state.accent.toLowerCase(), pending = color.value.toLowerCase();
+		const changed = pending !== current || theme.state.id !== 'custom';
+		preview.style.background = pending;
+		pendingLabel.textContent = pending;
+		applyBtn.disabled = !changed;
+		resetBtn.disabled = pending === current;
+	};
 	const bases = h('div.base-choices', { role: 'radiogroup', 'aria-label': 'Custom background' },
 		CUSTOM_BASES.map((b) => h('label', h('input', {
 			type: 'radio', name: `${name}-base`, value: b.id, checked: theme.state.base === b.id,
@@ -51,6 +58,7 @@ export function themeOptions({ legend = 'Theme', onChange } = {}) {
 	);
 	const custom = h('div.custom-controls',
 		h('label', { for: colorId }, 'Accent colour', color),
+		h('div.accent-actions', preview, pendingLabel, resetBtn, applyBtn),
 		h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px', fontSize: '0.85rem', fontWeight: '700' } }, h('span', 'Background'), bases),
 	);
 
@@ -58,7 +66,10 @@ export function themeOptions({ legend = 'Theme', onChange } = {}) {
 		const state = theme.state;
 		for (const [id, { input }] of radios) input.checked = id === state.id;
 		custom.hidden = state.id !== 'custom';
-		if (document.activeElement !== color) color.value = state.accent;
+		// keep a colour the player is still choosing; otherwise show the applied one
+		if (document.activeElement !== color && color.value.toLowerCase() === (sync.last ?? state.accent).toLowerCase()) color.value = state.accent;
+		sync.last = state.accent;
+		showPending();
 		for (const input of bases.querySelectorAll('input')) input.checked = input.value === state.base;
 		// the Custom swatch previews the custom colours whichever theme is active
 		const tokens = customTokens(state.accent, state.base);
@@ -68,7 +79,7 @@ export function themeOptions({ legend = 'Theme', onChange } = {}) {
 	sync();
 	const off = theme.subscribe(sync);
 	const el = h('div.theme-options', list, custom);
-	return { el, dispose: () => { if (accentFrame) cancelAnimationFrame(accentFrame); off(); } };
+	return { el, dispose: off };
 }
 
 /** The palette button with its popover; place it next to the settings gear. */

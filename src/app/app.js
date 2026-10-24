@@ -9,7 +9,7 @@ import { GAMES, CATEGORIES, gameById, categoryLabel } from '../games/registry.js
 import { store } from '../services/storage.js';
 import { audio } from '../services/audio.js';
 import { pwa } from '../services/pwa.js';
-import { QUALITY, BACKENDS, graphicsSettings, setGraphicsSettings } from '../services/graphics.js';
+import { QUALITY, QUALITY_CHOICES, BACKENDS, graphicsSettings, setGraphicsSettings, detectQuality } from '../services/graphics.js';
 import { themePicker, themeOptions } from '../components/themePicker.js';
 
 const featuredPool = GAMES.filter((g) => g.three);
@@ -206,7 +206,8 @@ export class App {
 
 	openSettings() {
 		const current = graphicsSettings();
-		const choice = { ...current };
+		const choice = { quality: current.choice, backend: current.backend };
+		const qualityChoices = { ...QUALITY_CHOICES, auto: { ...QUALITY_CHOICES.auto, label: `Auto (${QUALITY[detectQuality()].label} on this device)` } };
 		const group = (title, name, options, selected) => h('fieldset.choice-group',
 			h('legend', title),
 			Object.entries(options).map(([value, info]) => h('label.choice',
@@ -227,7 +228,7 @@ export class App {
 			h('form.panel.settings-panel', {
 				onsubmit: (e) => {
 					e.preventDefault();
-					if (choice.quality === current.quality && choice.backend === current.backend) return close();
+					if (choice.quality === current.choice && choice.backend === current.backend) return close();
 					// quality applies live (resolution, effects, shadows, particles, simulations);
 					// the backend is fixed when the GPU context is created, so only it reloads
 					const changed = setGraphicsSettings(choice);
@@ -238,7 +239,7 @@ export class App {
 			},
 			h('div.modal-head', h('h2', 'Settings'), iconButton('close', 'Close', close)),
 			themes.el,
-			group('Graphics quality', 'quality', QUALITY, current.quality),
+			group('Graphics quality', 'quality', qualityChoices, current.choice),
 			group('Rendering engine', 'backend', BACKENDS, current.backend),
 			h('p.muted.engine-status', `WAMR3D is drawing with ${this.backend ?? 'not started yet'}. WebGPU ${webgpu ? 'is' : 'is not'} exposed by this browser.`),
 			h('label.field', h('span', 'Sound effects'), sound),

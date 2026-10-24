@@ -563,3 +563,35 @@ h1, h2, h3 { margin: 0; letter-spacing: -0.02em; }
 @media (prefers-reduced-motion: reduce) {
 	*, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+
+/* ---------------------------------------------------------------- start-up reveal */
+/* entrance animations wait behind the splash screen (index.html), then play as it fades */
+body:not(.app-ready) #app, body:not(.app-ready) #app * { animation-play-state: paused !important; }
+body.app-entering #app > * { animation: app-in 0.6s var(--ease-out) backwards; }
+body.app-entering .game-grid > .game-card, body.app-entering .rail > .game-card { animation: card-in 0.5s var(--ease-out) backwards; }
+body.app-entering :is(.game-grid, .rail) > .game-card:nth-child(2) { animation-delay: 0.04s; }
+body.app-entering :is(.game-grid, .rail) > .game-card:nth-child(3) { animation-delay: 0.08s; }
+body.app-entering :is(.game-grid, .rail) > .game-card:nth-child(4) { animation-delay: 0.12s; }
+body.app-entering :is(.game-grid, .rail) > .game-card:nth-child(5) { animation-delay: 0.16s; }
+body.app-entering :is(.game-grid, .rail) > .game-card:nth-child(6) { animation-delay: 0.2s; }
+body.app-entering :is(.game-grid, .rail) > .game-card:nth-child(7) { animation-delay: 0.24s; }
+body.app-entering :is(.game-grid, .rail) > .game-card:nth-child(8) { animation-delay: 0.28s; }
+body.app-entering :is(.game-grid, .rail) > .game-card:nth-child(n + 9) { animation-delay: 0.32s; }
+@keyframes app-in { from { opacity: 0; transform: translateY(10px); } }
+@keyframes card-in { from { opacity: 0; transform: translateY(16px) scale(0.97); } }
+
+/* ---------------------------------------------------------------- theme changes */
+/* a cross-fade between themes (services/theme.js) instead of an abrupt repaint */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.45s; animation-timing-function: ease; }
+html.theme-fading, html.theme-fading *, html.theme-fading *::before, html.theme-fading *::after {
+	transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, fill 0.35s ease, stroke 0.35s ease, box-shadow 0.35s ease !important;
+}
+
+/* the custom accent: preview first, then Apply */
+.accent-actions { display: flex; align-items: center; gap: 8px; }
+.accent-preview { width: 22px; height: 22px; border-radius: 7px; border: 2px solid var(--color-border-strong); flex: none; transition: background-color 0.2s ease; }
+.accent-value { flex: 1; font-size: 0.8rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--color-text-muted); text-transform: uppercase; }
+.accent-actions .btn { min-height: 30px; padding: 0 12px; }
+@media (prefers-reduced-motion: reduce) {
+	body.app-entering #app > *, body.app-entering .game-card { animation: none !important; }
+}

@@ -7,7 +7,7 @@ import { Powder, M, MATERIALS } from './powder.js';
 import { qualityLevel } from '../../services/graphics.js';
 
 const W = 800, H = 500;
-const SIZES = { low: [160, 100], medium: [200, 125], high: [260, 162] };
+const SIZES = { ultralow: [120, 75], low: [160, 100], medium: [200, 125], high: [260, 162], ultra: [320, 200] };
 const PALETTE = [M.SAND, M.WATER, M.STONE, M.WOOD, M.FIRE, M.OIL, M.PLANT, M.ACID, M.LAVA, M.EMPTY];
 
 export default class SandBox extends CanvasGame {

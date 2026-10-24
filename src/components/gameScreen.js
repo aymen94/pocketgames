@@ -2,6 +2,7 @@
 // intro / pause / game-over / settings overlays, the on-screen touch pad, and the game's
 // lifecycle (load, init, start, pause, reset, dispose). Games never touch any of this.
 
+import { gameArt } from './art.js';
 import { h, icon, iconButton } from './dom.js';
 import { formatScore } from './gameCard.js';
 import { Loop } from '../engine/loop.js';
@@ -14,6 +15,9 @@ import { themePicker } from './themePicker.js';
 import { theme } from '../services/theme.js';
 import { reducedMotion } from '../games/core/fx.js';
 import '../styles/game-screen.css';
+
+/** The shortest time the loading card shows, so quick loads read as a transition, not a flash. */
+const MIN_LOADING = 900;
 
 const coarse = () => window.matchMedia('(pointer: coarse)').matches;
 
@@ -107,13 +111,29 @@ export class GameScreen {
 	// ------------------------------------------------------------ lifecycle
 
 	async open() {
-		this.showOverlay(h('div.panel.loading', h('div.spinner'), h('p', `Loading ${this.meta.title}…`)));
+		// a short loading card: it stays at least MIN_LOADING so a fast load does not flash,
+		// then the bar fills and the intro rises in its place
+		const started = performance.now();
+		const bar = h('div.loading-bar', h('span'));
+		const tip = this.meta.instructions?.[0];
+		this.showOverlay(h('div.panel.loading.game-loading',
+			h('div.loading-art', { html: gameArt(this.meta) }),
+			h('h2', this.meta.title),
+			bar,
+			h('p.loading-status', `Loading ${this.meta.three ? '3D scene' : 'game'}…`),
+			tip && h('p.loading-tip', h('strong', 'Tip: '), tip),
+		));
 		try {
 			const module = await this.meta.load();
 			const GameClass = module.default;
 			this.game = new GameClass(this.context());
 			this.realtime = GameClass.realtime;
 			await this.game.init();
+			if (this.closed) return this.game.dispose();
+			const wait = MIN_LOADING - (performance.now() - started);
+			if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+			bar.classList.add('done');
+			await new Promise((r) => setTimeout(r, reducedMotion() ? 0 : 260));
 			if (this.closed) return this.game.dispose();
 		} catch (error) {
 			console.error(error);
