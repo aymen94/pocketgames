@@ -1,0 +1,31 @@
+{
+  "name": "pocketgames",
+  "version": "0.0.2",
+  "private": true,
+  "description": "PocketGames: free browser games for everyone. Play instantly, no downloads. Rendered with WAMR3D.",
+  "keywords": [
+    "games",
+    "browser-games",
+    "arcade",
+    "puzzle",
+    "pwa",
+    "wamr3d",
+    "webgpu",
+    "webgl",
+    "vite"
+  ],
+  "author": "aymen94 <aymenadvance@gmail.com>",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "icons": "node scripts/make-icons.mjs"
+  },
+  "dependencies": {
+    "wamr3d": "^0.9.4"
+  },
+  "devDependencies": {
+    "vite": "^8.3.5"
+  }
+}

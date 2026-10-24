@@ -1,0 +1,230 @@
+/*
+ * PocketGames themes. Each theme sets the core design tokens on any element carrying
+ * `data-theme` (the <html> element for the whole site, or a swatch in the theme picker).
+ * Derived tokens (soft fills, glows, glass, scrims) are mixed from the core ones below,
+ * so a theme only states its essential colours. The Custom theme's core tokens are
+ * written inline on <html> by src/services/theme.js; its block here is the fallback.
+ */
+
+:root,
+[data-theme='midnight'],
+[data-theme='custom'] {
+	--scheme: dark;
+	--color-background: #0b1020;
+	--color-background-2: #111a3a;
+	--color-surface: #141b36;
+	--color-surface-2: #1b2447;
+	--color-surface-3: #19214a;
+	--color-surface-hover: #232e5c;
+	--color-border: #263060;
+	--color-border-strong: #3a4890;
+	--color-text: #f4f6ff;
+	--color-text-soft: #c3cae9;
+	--color-text-muted: #8d97c4;
+	--color-primary: #4f8cff;
+	--color-primary-hover: #6ea0ff;
+	--color-primary-active: #3b76e6;
+	--color-on-primary: #ffffff;
+	--color-secondary: #8b5cf6;
+	--color-tertiary: #f472b6;
+	--color-focus: #8ab4ff;
+	--color-success: #34d399;
+	--color-warning: #fbbf24;
+	--color-danger: #fb7185;
+	--color-eyebrow: #a5b4fc;
+	--color-scrim: #060914;
+	--color-shadow: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme='neon-arcade'] {
+	--scheme: dark;
+	--color-background: #07060f;
+	--color-background-2: #110d26;
+	--color-surface: #120f26;
+	--color-surface-2: #1a1636;
+	--color-surface-3: #1b1740;
+	--color-surface-hover: #241e4a;
+	--color-border: #2f2860;
+	--color-border-strong: #4b3fa0;
+	--color-text: #f5f3ff;
+	--color-text-soft: #cdc6f5;
+	--color-text-muted: #9189c4;
+	--color-primary: #22d3ee;
+	--color-primary-hover: #5ee4f5;
+	--color-primary-active: #06b6d4;
+	--color-on-primary: #04121a;
+	--color-secondary: #a855f7;
+	--color-tertiary: #3b82f6;
+	--color-focus: #67e8f9;
+	--color-success: #4ade80;
+	--color-warning: #facc15;
+	--color-danger: #fb7185;
+	--color-eyebrow: #67e8f9;
+	--color-scrim: #04030a;
+	--color-shadow: rgba(0, 0, 0, 0.75);
+}
+
+[data-theme='cyberpunk'] {
+	--scheme: dark;
+	--color-background: #0a0710;
+	--color-background-2: #1a0c24;
+	--color-surface: #170f20;
+	--color-surface-2: #22152e;
+	--color-surface-3: #26162f;
+	--color-surface-hover: #2f1c3a;
+	--color-border: #3d2350;
+	--color-border-strong: #6b2d7f;
+	--color-text: #fdf4ff;
+	--color-text-soft: #e5c9e8;
+	--color-text-muted: #a88bb0;
+	--color-primary: #ff2bd6;
+	--color-primary-hover: #ff66e2;
+	--color-primary-active: #e011bb;
+	--color-on-primary: #19001a;
+	--color-secondary: #00e5ff;
+	--color-tertiary: #f9f871;
+	--color-focus: #00e5ff;
+	--color-success: #34d399;
+	--color-warning: #f9f871;
+	--color-danger: #ff4d6d;
+	--color-eyebrow: #00e5ff;
+	--color-scrim: #06030a;
+	--color-shadow: rgba(0, 0, 0, 0.75);
+}
+
+[data-theme='emerald'] {
+	--scheme: dark;
+	--color-background: #06120d;
+	--color-background-2: #0c2219;
+	--color-surface: #0d2018;
+	--color-surface-2: #13291f;
+	--color-surface-3: #122a20;
+	--color-surface-hover: #1a3629;
+	--color-border: #1f4232;
+	--color-border-strong: #2e6a50;
+	--color-text: #ecfdf5;
+	--color-text-soft: #bfe6d3;
+	--color-text-muted: #7fae98;
+	--color-primary: #10b981;
+	--color-primary-hover: #34d399;
+	--color-primary-active: #059669;
+	--color-on-primary: #022c1e;
+	--color-secondary: #2dd4bf;
+	--color-tertiary: #a3e635;
+	--color-focus: #6ee7b7;
+	--color-success: #4ade80;
+	--color-warning: #fbbf24;
+	--color-danger: #f87171;
+	--color-eyebrow: #6ee7b7;
+	--color-scrim: #030a07;
+	--color-shadow: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme='sunset'] {
+	--scheme: dark;
+	--color-background: #140b14;
+	--color-background-2: #2a1222;
+	--color-surface: #22121f;
+	--color-surface-2: #2c1828;
+	--color-surface-3: #2e1729;
+	--color-surface-hover: #3a1f33;
+	--color-border: #4a2740;
+	--color-border-strong: #7a3a5e;
+	--color-text: #fff5ef;
+	--color-text-soft: #f1cdbf;
+	--color-text-muted: #b98f8f;
+	--color-primary: #fb923c;
+	--color-primary-hover: #fdba74;
+	--color-primary-active: #f97316;
+	--color-on-primary: #2a0e00;
+	--color-secondary: #fb7185;
+	--color-tertiary: #a855f7;
+	--color-focus: #fdba74;
+	--color-success: #4ade80;
+	--color-warning: #fde047;
+	--color-danger: #f43f5e;
+	--color-eyebrow: #fdba74;
+	--color-scrim: #0c050a;
+	--color-shadow: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme='light'] {
+	--scheme: light;
+	--color-background: #f3f5fb;
+	--color-background-2: #e6ebf8;
+	--color-surface: #ffffff;
+	--color-surface-2: #eef1f8;
+	--color-surface-3: #ffffff;
+	--color-surface-hover: #e4e9f5;
+	--color-border: #d3d9e8;
+	--color-border-strong: #aab5d0;
+	--color-text: #111827;
+	--color-text-soft: #374151;
+	--color-text-muted: #596377;
+	--color-primary: #2f5fd0;
+	--color-primary-hover: #2550b8;
+	--color-primary-active: #1d4299;
+	--color-on-primary: #ffffff;
+	--color-secondary: #7c3aed;
+	--color-tertiary: #db2777;
+	--color-focus: #2f5fd0;
+	--color-success: #0b8a5e;
+	--color-warning: #a16207;
+	--color-danger: #c42a4a;
+	--color-eyebrow: #4c3fb5;
+	--color-scrim: #1e293b;
+	--color-shadow: rgba(15, 23, 42, 0.18);
+}
+
+[data-theme='monochrome'] {
+	--scheme: dark;
+	--color-background: #0e0e10;
+	--color-background-2: #1a1a1d;
+	--color-surface: #18181b;
+	--color-surface-2: #222226;
+	--color-surface-3: #1e1e22;
+	--color-surface-hover: #2c2c31;
+	--color-border: #34343a;
+	--color-border-strong: #52525b;
+	--color-text: #f4f4f5;
+	--color-text-soft: #d4d4d8;
+	--color-text-muted: #a1a1aa;
+	--color-primary: #e4e4e7;
+	--color-primary-hover: #ffffff;
+	--color-primary-active: #c4c4c8;
+	--color-on-primary: #111113;
+	--color-secondary: #a1a1aa;
+	--color-tertiary: #71717a;
+	--color-focus: #ffffff;
+	--color-success: #a7d8bc;
+	--color-warning: #e6d59a;
+	--color-danger: #e8a3a3;
+	--color-eyebrow: #d4d4d8;
+	--color-scrim: #000000;
+	--color-shadow: rgba(0, 0, 0, 0.75);
+}
+
+/* Midnight's blue is bright enough for accents on dark surfaces but too light behind white
+   button text, so its filled controls use a deeper pair (white text at 4.5:1 or better). */
+[data-theme='midnight'] {
+	--color-fill: #2f66e0;
+	--color-fill-2: #7c3aed;
+}
+
+/* derived tokens, mixed per element so theme swatches preview correctly */
+:root,
+[data-theme] {
+	--color-primary-soft: color-mix(in srgb, var(--color-primary) 15%, transparent);
+	--color-primary-glow: color-mix(in srgb, var(--color-primary) 45%, transparent);
+	--color-border-soft: color-mix(in srgb, var(--color-text) 11%, transparent);
+	--color-tint: color-mix(in srgb, var(--color-text) 5%, transparent);
+	--color-tint-strong: color-mix(in srgb, var(--color-text) 10%, transparent);
+	--color-header: color-mix(in srgb, var(--color-background) 82%, transparent);
+	--color-glass: color-mix(in srgb, var(--color-surface) 75%, transparent);
+	--color-overlay: color-mix(in srgb, var(--color-scrim) 62%, transparent);
+	--color-glow-1: color-mix(in srgb, var(--color-secondary) 17%, transparent);
+	--color-glow-2: color-mix(in srgb, var(--color-primary) 14%, transparent);
+	--gradient-brand: linear-gradient(135deg, var(--color-fill, var(--color-primary)), var(--color-fill-2, var(--color-secondary)));
+	--gradient-text: linear-gradient(90deg, var(--color-primary-hover), var(--color-secondary) 55%, var(--color-tertiary));
+	color-scheme: var(--scheme);
+}

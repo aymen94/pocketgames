@@ -1,0 +1,26 @@
+/* Game screen refinements, loaded with components/gameScreen.js. Colours come from the theme tokens. */
+
+/* the score chip flashes when it rises, then settles back */
+.game-header .hud-chip.bump {
+	border-color: var(--color-border-soft);
+	background: var(--color-tint);
+	animation: chip-flash 0.6s ease-out;
+}
+@keyframes chip-flash {
+	0% { border-color: var(--color-primary); background: var(--color-primary-soft); }
+}
+
+/* phones: smaller controls and no fullscreen button, so the game title keeps its room */
+@media (max-width: 480px) {
+	.game-header .game-actions { gap: 3px; }
+	.game-header .icon-btn { width: 33px; height: 33px; border-radius: 9px; }
+	.game-header .icon-btn svg { width: 17px; height: 17px; }
+	.game-header .fullscreen-btn { display: none; }
+	.game-header .back-btn { width: 33px; }
+	.game-title h1 { font-size: 0.98rem; }
+	.game-title span { font-size: 0.62rem; }
+	/* app-level buttons shown in the game header collapse to icons */
+	.game-header .install { min-height: 33px; padding: 0 9px; }
+	.game-header .install span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+	.game-header .status-pill { height: 33px; }
+}

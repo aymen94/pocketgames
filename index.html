@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" data-theme="midnight">
+	<head>
+		<meta charset="UTF-8" />
+		<script>
+			// Restore the saved theme before first paint, so there is no flash of the default.
+			// src/services/theme.js owns the format; invalid values fall back to Midnight.
+			(function () {
+				try {
+					var saved = JSON.parse(localStorage.getItem('pocketgames:theme'));
+					var ids = ['midnight', 'neon-arcade', 'cyberpunk', 'emerald', 'sunset', 'light', 'monochrome', 'custom'];
+					if (!saved || ids.indexOf(saved.id) < 0) return;
+					var root = document.documentElement;
+					root.setAttribute('data-theme', saved.id);
+					if (saved.id === 'custom' && saved.vars) {
+						for (var name in saved.vars) {
+							var value = String(saved.vars[name]);
+							if (/^--(color-[a-z0-9-]+|scheme)$/.test(name) && /^[#a-z0-9(),.%\s-]+$/i.test(value)) root.style.setProperty(name, value);
+						}
+					}
+				} catch (e) {}
+			})();
+		</script>
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<title>PocketGames · Play Instantly. No Downloads.</title>
+		<meta name="description" content="Free browser games for everyone. Play classic arcade, puzzle, strategy, card, racing, car, ball, and sports games directly in your browser. No installation, no account, just click and play." />
+		<meta name="theme-color" content="#0b1020" />
+		<meta name="color-scheme" content="dark" />
+		<link rel="manifest" href="./manifest.webmanifest" />
+		<link rel="icon" href="./icons/icon.svg" type="image/svg+xml" />
+		<link rel="apple-touch-icon" href="./icons/icon-192.png" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-title" content="PocketGames" />
+	</head>
+	<body>
+		<div id="app">
+			<noscript>PocketGames needs JavaScript to run its games.</noscript>
+		</div>
+		<script type="module" src="./src/main.js"></script>
+	</body>
+</html>
